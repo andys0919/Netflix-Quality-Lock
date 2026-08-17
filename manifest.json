@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Netflix Quality Lock",
+  "description": "Locks Netflix to the highest available video bitrate.",
+  "version": "1.0.2",
+  "minimum_chrome_version": "120",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.netflix.com/*"
+      ],
+      "js": [
+        "content_script.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "netflix_max_bitrate.js",
+        "cadmium-playercore.js"
+      ],
+      "matches": [
+        "*://netflix.com/*",
+        "*://www.netflix.com/*"
+      ]
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "netflix-playercore",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "permissions": [
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "*://*.nflxext.com/*",
+    "*://netflix.com/*",
+    "*://www.netflix.com/*"
+  ]
+}
