@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Netflix Quality Lock</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="panel">
+      <header class="header">
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <div>
+          <h1>Netflix Quality Lock</h1>
+          <p id="version" class="version"></p>
+        </div>
+      </header>
+
+      <section class="target-selector" aria-labelledby="target-label">
+        <p id="target-label" class="selector-label">鎖定畫質</p>
+        <div class="target-options" role="radiogroup" aria-label="選擇鎖定畫質">
+          <button class="target-button" data-target="highest" role="radio" aria-checked="false">最高</button>
+          <button class="target-button" data-target="720p" role="radio" aria-checked="false">720p</button>
+          <button class="target-button" data-target="1080p" role="radio" aria-checked="false">1080p</button>
+          <button class="target-button" data-target="1440p" role="radio" aria-checked="false" title="1440p">2K</button>
+          <button class="target-button" data-target="2160p" role="radio" aria-checked="false" title="2160p">4K</button>
+        </div>
+      </section>
+
+      <section class="resolution-card" aria-live="polite">
+        <div class="status-row">
+          <p class="eyebrow">目前實際輸出畫素</p>
+          <span id="status" class="status status-waiting">讀取中</span>
+        </div>
+        <p id="resolution" class="resolution">—</p>
+        <p id="quality" class="quality">正在讀取 Netflix 播放器</p>
+      </section>
+
+      <dl class="details">
+        <div class="detail-row">
+          <dt>最高畫質鎖定</dt>
+          <dd id="lock-state">讀取中</dd>
+        </div>
+        <div class="detail-row">
+          <dt>Bitrate / VMAF</dt>
+          <dd id="bitrate">—</dd>
+        </div>
+      </dl>
+
+      <p id="hint" class="hint">數值會依播放器目前解碼的影像即時更新。</p>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
