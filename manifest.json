@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Netflix Quality Lock",
   "description": "Locks Netflix playback to a chosen video quality and bitrate.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "minimum_chrome_version": "120",
   "action": {
     "default_title": "Netflix Quality Lock",

@@ -14,7 +14,7 @@
     "2160p"
   ]);
   const TARGET_LABELS = {
-    highest: "最高畫質",
+    highest: "Highest",
     "720p": "720p",
     "1080p": "1080p",
     "1440p": "2K / 1440p",
@@ -122,13 +122,13 @@
 
     const target = normalizeTarget(detail.target);
     const resolution = Number(detail.width) > 0 && Number(detail.height) > 0
-      ? `（${detail.width} × ${detail.height}）`
+      ? ` (${detail.width} × ${detail.height})`
       : "";
     const toast = document.createElement("div");
     toast.id = "netflix-quality-lock-toast";
     toast.setAttribute("role", "status");
     toast.setAttribute("aria-live", "polite");
-    toast.textContent = `Netflix 已鎖定${TARGET_LABELS[target]}${resolution}：${detail.video}`;
+    toast.textContent = `Netflix quality locked to ${TARGET_LABELS[target]}${resolution}: ${detail.video}`;
     Object.assign(toast.style, {
       position: "fixed",
       top: "18px",

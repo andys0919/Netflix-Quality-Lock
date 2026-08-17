@@ -13,7 +13,7 @@
     "2160p"
   ]);
   const TARGET_LABELS = {
-    highest: "最高畫質",
+    highest: "Highest",
     "720p": "720p",
     "1080p": "1080p",
     "1440p": "2K / 1440p",
@@ -81,7 +81,7 @@
       return "SD / 480p";
     }
 
-    return height > 0 ? `${height}p` : "等待影像輸出";
+    return height > 0 ? `${height}p` : "Waiting for video output";
   };
 
   const setSelectedTarget = (target) => {
@@ -99,12 +99,12 @@
   };
 
   const renderUnavailable = () => {
-    setStatus("unavailable", "無法讀取");
+    setStatus("unavailable", "Unavailable");
     elements.resolution.textContent = "—";
-    elements.quality.textContent = "請在 Netflix 播放頁開啟";
-    elements.lockState.textContent = `已記住 ${TARGET_LABELS[selectedTarget]}`;
+    elements.quality.textContent = "Open this on a Netflix playback page";
+    elements.lockState.textContent = `Saved: ${TARGET_LABELS[selectedTarget]}`;
     elements.bitrate.textContent = "—";
-    elements.hint.textContent = "若剛重新載入插件，請重新整理 Netflix 分頁一次。";
+    elements.hint.textContent = "If the extension was just reloaded, refresh the Netflix tab once.";
   };
 
   const render = (status) => {
@@ -116,12 +116,12 @@
     setSelectedTarget(status.target);
 
     if (!status.onWatchPage) {
-      setStatus("inactive", "未播放");
+      setStatus("inactive", "Not playing");
       elements.resolution.textContent = "—";
-      elements.quality.textContent = "目前不是 Netflix 播放頁";
-      elements.lockState.textContent = `等待套用 ${TARGET_LABELS[selectedTarget]}`;
+      elements.quality.textContent = "This is not a Netflix playback page";
+      elements.lockState.textContent = `Waiting to apply ${TARGET_LABELS[selectedTarget]}`;
       elements.bitrate.textContent = "—";
-      elements.hint.textContent = "開啟任一影片後，選定畫質會自動套用。";
+      elements.hint.textContent = "Start any title to apply the selected quality automatically.";
       return;
     }
 
@@ -137,25 +137,25 @@
 
     if (status.state === "locked" && status.exactMatch === false) {
       const appliedQuality = qualityLabel(selectedWidth, selectedHeight);
-      elements.hint.textContent = `Netflix 未提供 ${TARGET_LABELS[selectedTarget]}，已鎖定可用的 ${appliedQuality}。`;
+      elements.hint.textContent = `Netflix does not offer ${TARGET_LABELS[selectedTarget]}; locked to the available ${appliedQuality}.`;
     } else {
-      elements.hint.textContent = "數值會依播放器目前解碼的影像即時更新。";
+      elements.hint.textContent = "Updates live from the video currently decoded by the player.";
     }
 
     switch (status.state) {
       case "locked":
-        setStatus("locked", "已鎖定");
+        setStatus("locked", "Locked");
         elements.lockState.textContent = status.exactMatch === false
-          ? "已鎖定最接近的可用畫質"
-          : `已鎖定 ${TARGET_LABELS[selectedTarget]}`;
+          ? "Locked to the nearest available quality"
+          : `Locked to ${TARGET_LABELS[selectedTarget]}`;
         break;
       case "locking":
-        setStatus("locking", "套用中");
-        elements.lockState.textContent = `正在套用 ${TARGET_LABELS[selectedTarget]}`;
+        setStatus("locking", "Applying");
+        elements.lockState.textContent = `Applying ${TARGET_LABELS[selectedTarget]}`;
         break;
       default:
-        setStatus("waiting", "等待中");
-        elements.lockState.textContent = `等待套用 ${TARGET_LABELS[selectedTarget]}`;
+        setStatus("waiting", "Waiting");
+        elements.lockState.textContent = `Waiting to apply ${TARGET_LABELS[selectedTarget]}`;
         break;
     }
   };
@@ -186,8 +186,8 @@
         type: SET_TARGET_REQUEST,
         target: normalizedTarget
       });
-      setStatus("locking", "套用中");
-      elements.lockState.textContent = `正在套用 ${TARGET_LABELS[normalizedTarget]}`;
+      setStatus("locking", "Applying");
+      elements.lockState.textContent = `Applying ${TARGET_LABELS[normalizedTarget]}`;
       elements.bitrate.textContent = "—";
     } catch (_error) {
       renderUnavailable();

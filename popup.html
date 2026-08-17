@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,9 +17,9 @@
       </header>
 
       <section class="target-selector" aria-labelledby="target-label">
-        <p id="target-label" class="selector-label">鎖定畫質</p>
-        <div class="target-options" role="radiogroup" aria-label="選擇鎖定畫質">
-          <button class="target-button" data-target="highest" role="radio" aria-checked="false">最高</button>
+        <p id="target-label" class="selector-label">Quality lock</p>
+        <div class="target-options" role="radiogroup" aria-label="Select playback quality">
+          <button class="target-button" data-target="highest" role="radio" aria-checked="false">Highest</button>
           <button class="target-button" data-target="720p" role="radio" aria-checked="false">720p</button>
           <button class="target-button" data-target="1080p" role="radio" aria-checked="false">1080p</button>
           <button class="target-button" data-target="1440p" role="radio" aria-checked="false" title="1440p">2K</button>
@@ -29,17 +29,17 @@
 
       <section class="resolution-card" aria-live="polite">
         <div class="status-row">
-          <p class="eyebrow">目前實際輸出畫素</p>
-          <span id="status" class="status status-waiting">讀取中</span>
+          <p class="eyebrow">Current decoded resolution</p>
+          <span id="status" class="status status-waiting">Loading</span>
         </div>
         <p id="resolution" class="resolution">—</p>
-        <p id="quality" class="quality">正在讀取 Netflix 播放器</p>
+        <p id="quality" class="quality">Reading the Netflix player</p>
       </section>
 
       <dl class="details">
         <div class="detail-row">
-          <dt>最高畫質鎖定</dt>
-          <dd id="lock-state">讀取中</dd>
+          <dt>Quality lock</dt>
+          <dd id="lock-state">Loading</dd>
         </div>
         <div class="detail-row">
           <dt>Bitrate / VMAF</dt>
@@ -47,7 +47,7 @@
         </div>
       </dl>
 
-      <p id="hint" class="hint">數值會依播放器目前解碼的影像即時更新。</p>
+      <p id="hint" class="hint">Updates live from the video currently decoded by the player.</p>
     </main>
 
     <script src="popup.js"></script>
