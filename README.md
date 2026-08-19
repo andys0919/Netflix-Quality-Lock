@@ -27,7 +27,7 @@ gate for Netflix's existing manual bitrate menu is enabled, and the menu's
 video entries expose their existing width and height so the selected tier can
 be matched to the correct stream.
 
-## Install in Brave, Chrome, or Edge
+## Install locally for development
 
 1. Download or clone this repository and keep the folder in a permanent
    location.
@@ -38,6 +38,18 @@ be matched to the correct stream.
 
 The extension then applies the saved quality automatically whenever a Netflix
 player session starts or changes. The default is **Highest**.
+
+## One-click distribution
+
+For normal end-user installation, publish this package to the **Chrome Web
+Store** and/or **Microsoft Edge Add-ons**. Use an unlisted Chrome Web Store
+listing when you want to share a direct installation link without making the
+extension searchable.
+
+GitHub downloads and unpacked extension folders are development installation
+paths. They do not provide a normal one-click installation on Windows or
+macOS. Increase the version in `manifest.json` for every store upload. The
+repository does not have a store listing yet.
 
 ## Verify
 

@@ -15,8 +15,8 @@
   const VALID_TARGETS = new Set(["highest", ...Object.keys(TARGET_HEIGHTS)]);
 
   let targetQuality = "highest";
-  let lockedSessionId = null;
-  let lockingSessionId = null;
+  let lockedPlaybackKey = null;
+  let lockingPlaybackKey = null;
   let lockGeneration = 0;
 
   const normalizeTarget = (target) => VALID_TARGETS.has(target)
@@ -153,15 +153,27 @@
   const getActivePlayer = () => {
     const videoPlayer = window.netflix?.appContext?.state?.playerApp
       ?.getAPI?.().videoPlayer;
-    const sessionId = videoPlayer?.getAllPlayerSessionIds?.()[0];
-    const player = sessionId
-      ? videoPlayer.getVideoPlayerBySessionId(sessionId)
-      : null;
+    for (const sessionId of videoPlayer?.getAllPlayerSessionIds?.() ?? []) {
+      const player = videoPlayer.getVideoPlayerBySessionId(sessionId);
+      if (player?.isPlaying?.()) {
+        return { player, sessionId };
+      }
+    }
 
-    return { player, sessionId };
+    return { player: null, sessionId: null };
   };
 
-  const lockSelectedQuality = (sessionId) => {
+  const getPlaybackKey = (sessionId, player) => {
+    const movieId = player?.getMovieId?.();
+    return `${sessionId}:${movieId ?? window.location.href}`;
+  };
+
+  const getCurrentPlaybackKey = () => {
+    const { player, sessionId } = getActivePlayer();
+    return sessionId ? getPlaybackKey(sessionId, player) : null;
+  };
+
+  const lockSelectedQuality = (sessionId, playbackKey) => {
     let videoSelect = findVideoSelect();
     let overrideButton = findOverrideButton();
 
@@ -181,7 +193,7 @@
     }
 
     selectOnly(videoSelect, selected.option);
-    lockingSessionId = sessionId;
+    lockingPlaybackKey = playbackKey;
     const generation = lockGeneration;
     const requestedHeight = TARGET_HEIGHTS[targetQuality];
     const exactMatch = targetQuality === "highest"
@@ -195,16 +207,20 @@
     report("locking", detail);
 
     setTimeout(() => {
-      if (generation !== lockGeneration || !overrideButton.isConnected) {
+      if (
+        generation !== lockGeneration
+        || playbackKey !== getCurrentPlaybackKey()
+        || !overrideButton.isConnected
+      ) {
         if (generation === lockGeneration) {
-          lockingSessionId = null;
+          lockingPlaybackKey = null;
         }
         return;
       }
 
       overrideButton.click();
-      lockedSessionId = sessionId;
-      lockingSessionId = null;
+      lockedPlaybackKey = playbackKey;
+      lockingPlaybackKey = null;
       report("locked", detail);
     }, 250);
 
@@ -214,27 +230,28 @@
   window.addEventListener(TARGET_EVENT, (event) => {
     targetQuality = normalizeTarget(event.detail?.target);
     lockGeneration += 1;
-    lockedSessionId = null;
-    lockingSessionId = null;
+    lockedPlaybackKey = null;
+    lockingPlaybackKey = null;
     report("waiting");
   });
 
   setInterval(() => {
     if (!WATCH_PAGE.test(window.location.href)) {
-      lockedSessionId = null;
-      lockingSessionId = null;
+      lockedPlaybackKey = null;
+      lockingPlaybackKey = null;
       return;
     }
 
     const { player, sessionId } = getActivePlayer();
-    if (!sessionId || !player?.isPlaying?.()) {
+    if (!sessionId || !player) {
       return;
     }
 
-    if (sessionId === lockedSessionId || sessionId === lockingSessionId) {
+    const playbackKey = getPlaybackKey(sessionId, player);
+    if (playbackKey === lockedPlaybackKey || playbackKey === lockingPlaybackKey) {
       return;
     }
 
-    lockSelectedQuality(sessionId);
+    lockSelectedQuality(sessionId, playbackKey);
   }, POLL_INTERVAL_MS);
 })();
