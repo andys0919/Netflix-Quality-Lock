@@ -39,6 +39,8 @@ be matched to the correct stream.
 The extension then applies the saved quality automatically whenever a Netflix
 player session starts or changes. The default is **Highest**.
 
+For the free GitHub Release installation flow, see [INSTALL.md](INSTALL.md).
+
 ## One-click distribution
 
 For normal end-user installation, publish this package to the **Chrome Web
@@ -46,7 +48,7 @@ Store** and/or **Microsoft Edge Add-ons**. Use an unlisted Chrome Web Store
 listing when you want to share a direct installation link without making the
 extension searchable.
 
-GitHub downloads and unpacked extension folders are development installation
+GitHub Release ZIPs and unpacked extension folders are free manual-install
 paths. They do not provide a normal one-click installation on Windows or
 macOS. Increase the version in `manifest.json` for every store upload. The
 repository does not have a store listing yet.
